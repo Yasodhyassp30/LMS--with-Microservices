@@ -10,6 +10,12 @@ spring:
                   uri: lb://auth-service
                   predicates:
                     - Path=/auth/**
+                - id : class-service
+                  uri: lb://class-service
+                  predicates:
+                    - Path=/class/**
+                  filters:
+                    - AuthFilter
         
 
 

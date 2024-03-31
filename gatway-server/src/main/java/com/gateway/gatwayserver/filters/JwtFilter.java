@@ -14,7 +14,9 @@ public class JwtFilter{
     public Claims tokenValidation(String token){
         try{
         SecretKey secretKey = Keys.hmacShaKeyFor(Secret_Key.getBytes());
-        return Jwts.parser().decryptWith(secretKey).build().parseSignedClaims(token).getPayload();
+        
+        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload();
+        
         }catch(Exception e){
             return null;
         }

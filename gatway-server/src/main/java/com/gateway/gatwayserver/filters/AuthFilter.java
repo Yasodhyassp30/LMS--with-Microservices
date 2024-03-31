@@ -36,6 +36,7 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
             }
             token = token.substring(7);
             Claims claims = jwtFilter.tokenValidation(token);
+            
             if (claims != null) {
                 exchange.getRequest().mutate().header("claims", claims.toString());
                 return chain.filter(exchange);
