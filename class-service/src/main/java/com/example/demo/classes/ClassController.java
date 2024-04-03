@@ -61,6 +61,18 @@ public class ClassController {
     public ResponseEntity<?> getStudentsInClass(@PathVariable UUID cid) {
         return ResponseEntity.ok(classService.getMembers(cid));
     }
+
+    @GetMapping("/joincode/{cid}")
+    public ResponseEntity<Map<String,String>> getJoinCode(@PathVariable UUID cid) {
+        return ResponseEntity.ok(classService.getJoinCode(cid));
+    }
+
+    @DeleteMapping("/teacher/remove/{cid}/{sid}")
+    public ResponseEntity<Map<String,String>> removeStudent(@PathVariable UUID cid, @PathVariable String sid) {
+        classService.removeMember(cid, sid);
+        Map<String,String> response = Map.of("message", "Student removed successfully");
+        return ResponseEntity.ok(response);
+    }
     
     
 }

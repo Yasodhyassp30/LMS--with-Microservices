@@ -78,5 +78,25 @@ public class ClassService {
         }
         return memberRepo.findAllByCourse(classModel);
     }
+
+    public Map<String,String> getJoinCode(UUID cid) {
+        ClassModel classModel = classRepo.findByCid(cid);
+        if(classModel == null){
+            throw new EntityExistenceException("Class does not exist");
+        }
+        return Map.of("joinCode", classModel.getJoinCode());
+    }
+
+    public void removeMember(UUID cid, String sid) {
+        ClassModel classModel = classRepo.findByCid(cid);
+        Optional<MemberModel> memberModel = memberRepo.findBySid(sid);
+        if(((Map<String, String>) memberModel).isEmpty()){
+            throw new EntityExistenceException("Student not in class");
+        }
+        if(classModel == null){
+            throw new EntityExistenceException("Class does not exist");
+        }
+        memberRepo.delete(memberModel.get());
+    }
 }
 
