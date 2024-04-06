@@ -10,15 +10,17 @@ import {
   import LockIcon from "@mui/icons-material/Lock";
   import { useRef, useState } from "react";
   import axios from "axios";
+import { useDispatch } from "react-redux";
+import { authSlice } from "../reducers/authreducer/authReducer";
 
 
-export default function Register() {
+export default function Register()  {
     const email = useRef<HTMLInputElement>(null);
     const password = useRef<HTMLInputElement>(null);
     const username = useRef<HTMLInputElement>(null);
-    const [role,setRole] = useState<string>("");
-
+    const [role,setRole] = useState<string>("select role");
     const [error,setError] = useState<string>("");
+    const dispatch = useDispatch();
 
     const register = () => {
         if (!email.current?.value || !password.current?.value || !username.current?.value || role === "Select Role") {
@@ -35,6 +37,7 @@ export default function Register() {
             })
             .then((res) => {
                 localStorage.setItem("user", JSON.stringify(res.data));
+                dispatch(authSlice.actions.setLogged({}));
             })
             .catch((err) => {
                 setError(err.response.data.error);
