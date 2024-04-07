@@ -73,6 +73,11 @@ public class ClassController {
         Map<String,String> response = Map.of("message", "Student removed successfully");
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/student/classes/{sid}")
+    public ResponseEntity<?> getClassesByStudentId(@PathVariable String sid) {
+        return ResponseEntity.ok(classService.getClassesByStudentId(sid));
+    }
     
     
 }

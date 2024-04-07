@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import com.example.demo.errorHandler.EntityExistenceException;
 import com.example.demo.members.MemberModel;
 import com.example.demo.members.MemberRepo;
-import com.google.common.base.Optional;
+import java.util.Optional;
 
 
 @Service
@@ -62,7 +62,7 @@ public class ClassService {
     public void leaveClass(UUID cid, String sid) {
         ClassModel classModel = classRepo.findByCid(cid);
         Optional<MemberModel> memberModel = memberRepo.findBySid(sid);
-        if(((Map<String, String>) memberModel).isEmpty()){
+        if(!memberModel.isPresent()){
             throw new EntityExistenceException("Student not in class");
         }
         if(classModel == null){
@@ -90,13 +90,17 @@ public class ClassService {
     public void removeMember(UUID cid, String sid) {
         ClassModel classModel = classRepo.findByCid(cid);
         Optional<MemberModel> memberModel = memberRepo.findBySid(sid);
-        if(((Map<String, String>) memberModel).isEmpty()){
+        if(memberModel.isPresent()){
             throw new EntityExistenceException("Student not in class");
         }
         if(classModel == null){
             throw new EntityExistenceException("Class does not exist");
         }
         memberRepo.delete(memberModel.get());
+    }
+
+    public List<ClassModel> getClassesByStudentId(String studentId) {
+        return memberRepo.findClassesByStudentId(studentId);
     }
 }
 

@@ -8,11 +8,14 @@ import {
 import LockIcon from "@mui/icons-material/Lock";
 import { useRef, useState } from "react";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { authSlice } from "../reducers/authreducer/authReducer";
 
 export default function Login() {
   const email = useRef<HTMLInputElement>(null);
   const password = useRef<HTMLInputElement>(null);
   const [error,setError] = useState<string>("");
+  const dispatch = useDispatch();
 
   const login = () => {
     if (!email.current?.value || !password.current?.value) {
@@ -27,6 +30,7 @@ export default function Login() {
       })
       .then((res) => {
           localStorage.setItem("user", JSON.stringify(res.data));
+          dispatch(authSlice.actions.setLogged({}));
           
       })
       .catch((err) => {

@@ -22,6 +22,15 @@ export const authSlice = createSlice({
                 state.token = userFromStore.token;
                 state.username = userFromStore.username;
             }
+        },
+
+        logout(state, action){
+            state.role = "";
+            state.id = "";
+            state.email = "";
+            state.token = "";
+            state.username = "";
+            localStorage.removeItem("user");
         }
     }
 })
