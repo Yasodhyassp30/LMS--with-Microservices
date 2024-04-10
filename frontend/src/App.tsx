@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from './reducers/authreducer/combinedReducers';
 import { authSlice } from './reducers/authreducer/authReducer';
 import Navbar from './navbar/navbar';
+import TeacherDashboard from './classes/teacher/dashboard';
 
 
 
@@ -29,7 +30,9 @@ function App() {
       <Routes>
       <Route path="/login" element={(user.token==="")? <Login/>:<Navigate to="/dashboard"/>}/>
       <Route path="/register" element={(user.token==="")? <Register/>:<Navigate to="/dashboard"/>}/>
-      <Route path="/dashboard" element={(user.token!=="")? <StudentDashboard/>:<Navigate to="/login"/>}/>
+      <Route path="/dashboard" element={(user.token!=="")?
+      user.role==="Teacher"?<TeacherDashboard/>:<StudentDashboard/>
+      :<Navigate to="/login"/>}/>
       <Route path='/' element={<Navigate to="/login"/>}/>
 
       </Routes>

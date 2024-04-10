@@ -1,8 +1,12 @@
+import { classApi } from "../classReducer/classApis";
 import { authSlice } from "./authReducer";
-import { combineReducers } from "redux";
+import { combineReducers, Reducer } from "redux";
 
-const combinedReducers = combineReducers({
-    auth: authSlice.reducer
+const combinedReducers: Reducer = combineReducers({
+    auth: authSlice.reducer,
+    [classApi.reducerPath]: classApi.reducer
+
+    
 })
 
 export default combinedReducers;

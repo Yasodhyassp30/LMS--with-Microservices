@@ -1,5 +1,4 @@
-import React, { useEffect } from "react";
-import { instance } from "../../axiosConfig";
+
 import { useSelector } from "react-redux";
 import { RootState } from "../../reducers/authreducer/combinedReducers";
 import { Button, Typography } from "@mui/material";
@@ -7,23 +6,11 @@ import AssignmentIcon from '@mui/icons-material/Assignment';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import JoinClass from "./joinClass";
+import { useGetClassesStudentQuery } from "../../reducers/classReducer/classApis";
 
 export default function StudentDashboard() {
   const user = useSelector((state: RootState) => state.auth);
-  const [classes, setClasses] = React.useState([]);
-
-  const getClasses = async () => {
-    try {
-      const res = await instance.get(`/class/student/classes/${user.id}`);
-      setClasses(res.data);
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  useEffect(() => {
-    getClasses();
-  }, [user]);
+  const { data, error, isLoading } = useGetClassesStudentQuery(user.id);
 
   return (
     <div style={{
@@ -43,7 +30,7 @@ export default function StudentDashboard() {
       <JoinClass/>
       </div>
       <div>
-        {classes.map((cls: any) => {
+        {isLoading && (data ?? []).map((cls: any) => {
             return (
             <div
               key={cls._id}

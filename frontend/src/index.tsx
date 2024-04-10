@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 import { configureStore } from '@reduxjs/toolkit';
 import combinedReducers from './reducers/authreducer/combinedReducers';
 import { Provider } from 'react-redux';
+import { classApi } from './reducers/classReducer/classApis';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -13,6 +14,22 @@ const root = ReactDOM.createRoot(
 
 export const store = configureStore({
   reducer: combinedReducers,
+
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(classApi.middleware).concat((middlewareAPI) => (next) => (action: any) => {
+     
+        
+        const user = JSON.parse(localStorage.getItem('user') as string);
+        console.log(user);
+        if (user) {
+          action.headers = {
+            ...action.headers,
+            Authorization: `Bearer ${user.token}`,
+          };
+        }
+      
+      return next(action);
+    }),
 });
 export type AppDispatch = typeof store.dispatch ;
 root.render(

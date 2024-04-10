@@ -13,15 +13,13 @@ import jakarta.servlet.http.HttpServletResponse;
 public class RoleBasedFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        String role = request.getHeader("claims");
+        String role = request.getHeader("role");
         if(role == null){
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("Role not provided");
             return;
         }
-        System.out.println(role);
-
-        if(!role.equals("Teacher")&& request.getRequestURI().contains("/teacher")){
+        if(request.getRequestURI().contains("/teacher")&&!role.equals("Teacher")){
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);
             response.getWriter().write("Forbidden");
             return;

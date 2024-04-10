@@ -38,7 +38,8 @@ public class AuthFilter extends AbstractGatewayFilterFactory<AuthFilter.Config> 
             Claims claims = jwtFilter.tokenValidation(token);
             
             if (claims != null) {
-                exchange.getRequest().mutate().header("claims", claims.toString());
+                String role = (String) claims.get("role");
+                exchange.getRequest().mutate().header("role", role);
                 return chain.filter(exchange);
             } else {
                 exchange.getResponse().setStatusCode(org.springframework.http.HttpStatus.UNAUTHORIZED);
