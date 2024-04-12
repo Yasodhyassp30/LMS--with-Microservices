@@ -11,7 +11,7 @@ import {
   import { useRef, useState } from "react";
   import axios from "axios";
 import { useDispatch } from "react-redux";
-import { authSlice } from "../reducers/authreducer/authReducer";
+import { authSlice } from "../../reducers/authreducer/authReducer";
 
 
 export default function Register()  {

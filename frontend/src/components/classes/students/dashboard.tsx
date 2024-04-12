@@ -1,12 +1,12 @@
 
 import { useSelector } from "react-redux";
-import { RootState } from "../../reducers/authreducer/combinedReducers";
+import { RootState } from "../../../reducers/authreducer/combinedReducers";
 import { Button, Typography } from "@mui/material";
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import JoinClass from "./joinClass";
-import { useGetClassesStudentQuery } from "../../reducers/classReducer/classApis";
+import { useGetClassesStudentQuery } from "../../../reducers/classReducer/classApis";
 
 export default function StudentDashboard() {
   const user = useSelector((state: RootState) => state.auth);

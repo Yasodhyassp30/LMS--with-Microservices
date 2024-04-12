@@ -4,8 +4,8 @@ import React from 'react'
 import MenuIcon from '@mui/icons-material/Menu';
 import { Home, Logout } from '@mui/icons-material';
 import { useDispatch, useSelector } from 'react-redux';
-import { authSlice } from '../reducers/authreducer/authReducer';
-import { RootState } from '../reducers/authreducer/combinedReducers';
+import { authSlice } from '../../reducers/authreducer/authReducer';
+import { RootState } from '../../reducers/authreducer/combinedReducers';
 
 export default function Navbar() {
   const [open,setOpen] = React.useState(false);

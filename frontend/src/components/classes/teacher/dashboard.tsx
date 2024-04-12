@@ -1,14 +1,14 @@
 import React, { useEffect } from "react";
-import { instance } from "../../axiosConfig";
+import { instance } from "../../../axiosConfig";
 import { useSelector } from "react-redux";
-import { RootState } from "../../reducers/authreducer/combinedReducers";
+import { RootState } from "../../../reducers/authreducer/combinedReducers";
 import { Button, Typography } from "@mui/material";
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import CreateClass from "./createClass";
 import { Delete } from "@mui/icons-material";
 import { People } from "@mui/icons-material";
-import { useGetClassesTeacherQuery } from "../../reducers/classReducer/classApis";
+import { useGetClassesTeacherQuery } from "../../../reducers/classReducer/classApis";
 
 
 export default function TeacherDashboard() {

@@ -1,18 +1,16 @@
 
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
-import { instance } from '../../axiosConfig';
+import { instance } from '../../../axiosConfig';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../reducers/authreducer/combinedReducers';
+import { RootState } from '../../../reducers/authreducer/combinedReducers';
 
-export default function JoinClass() {
+export default function CreateClass() {
     const [open, setOpen] = useState(false);
-    const [classroomId, setClassroomId] = useState('');
-    const [joinCode, setJoinCode] = useState('');
-    const [error, setError] = useState('');
+    const name = useRef<HTMLInputElement>(null);
     const user= useSelector((state:RootState)=>state.auth);
-
+    const [error, setError] = useState('');
     const handleOpen = () => {
         setOpen(true);
     };
@@ -23,16 +21,14 @@ export default function JoinClass() {
 
     const handleJoin = async () => {
         
-        if(classroomId!=='' && joinCode!==''){
+        if(name.current?.value){
             try{
 
-                const res = await instance.post(`/class/student/join/${classroomId}`, {
-                    joinCode: joinCode,
-                    sid: user.id
+                const res = await instance.post('/class/', {
+                    teacher: user.id,
+                    name: name.current.value
+
                 })
-                setJoinCode('');
-                setClassroomId('');
-                setError('');
                 handleClose();
 
 
@@ -51,10 +47,10 @@ export default function JoinClass() {
           marginRight: "10px"
         
         }}/>
-                Join Class
+                Create Class
             </Button>
             <Dialog open={open} onClose={handleClose}>
-                <DialogTitle>Join Class</DialogTitle>
+                <DialogTitle>Create Class</DialogTitle>
                 <DialogContent>
                     <p style={{
                         color: 'red'
@@ -63,25 +59,16 @@ export default function JoinClass() {
                     <TextField
                         autoFocus
                         margin="dense"
-                        label="Classroom ID"
+                        label="Class Name"
                         type="text"
                         fullWidth
-                        value={classroomId}
-                        onChange={(e) => setClassroomId(e.target.value)}
-                    />
-                    <TextField
-                        margin="dense"
-                        label="Join Code"
-                        type="text"
-                        fullWidth
-                        value={joinCode}
-                        onChange={(e) => setJoinCode(e.target.value)}
+                        inputRef={name}
                     />
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose}>Cancel</Button>
                     <Button onClick={handleJoin} variant="contained" color="primary">
-                        Join
+                        Create
                     </Button>
                 </DialogActions>
             </Dialog>

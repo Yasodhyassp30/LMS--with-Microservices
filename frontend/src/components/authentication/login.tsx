@@ -9,7 +9,7 @@ import LockIcon from "@mui/icons-material/Lock";
 import { useRef, useState } from "react";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { authSlice } from "../reducers/authreducer/authReducer";
+import { authSlice } from "../../reducers/authreducer/authReducer";
 
 export default function Login() {
   const email = useRef<HTMLInputElement>(null);
