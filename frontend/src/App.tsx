@@ -11,6 +11,7 @@ import Navbar from "./components/navbar/navbar";
 import TeacherDashboard from "./components/classes/teacher/dashboard";
 import { SYSTEM_USER_TYPES } from "./commonContsnats";
 import PageNotFound from "./components/common/pageNotFound";
+import ClassView from "./components/classes/teacher/classView";
 
 function App() {
   const dispatch = useDispatch();
@@ -51,7 +52,7 @@ function App() {
             path="/dashboard"
             element={
               user.token !== "" ? (
-                getUserSpecificDashboard()
+               getUserSpecificDashboard()
               ) : (
                 <Navigate to="/login" />
               )
@@ -63,6 +64,9 @@ function App() {
               user.token !== "" ? <PageNotFound /> : <Navigate to="/login" />
             }
           />
+          <Route path="/class/:id" element={
+            user.token !== "" ? <ClassView/> : <Navigate to="/login" />
+          }/>
         </Routes>
       </BrowserRouter>
     </div>

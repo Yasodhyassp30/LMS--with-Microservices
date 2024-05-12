@@ -15,6 +15,5 @@ public interface MemberRepo extends JpaRepository<MemberModel, Long>{
     
     @Query("SELECT c FROM ClassModel c JOIN MemberModel m ON c.cid = m.course.cid WHERE m.sid = :studentId")
     List<ClassModel> findClassesByStudentId(String studentId);
-
     
-} 
+}

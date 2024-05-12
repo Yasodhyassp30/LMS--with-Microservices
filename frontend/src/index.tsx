@@ -20,7 +20,6 @@ export const store = configureStore({
      
         
         const user = JSON.parse(localStorage.getItem('user') as string);
-        console.log(user);
         if (user) {
           action.headers = {
             ...action.headers,

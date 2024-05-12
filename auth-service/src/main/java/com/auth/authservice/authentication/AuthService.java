@@ -46,5 +46,10 @@ public class AuthService {
         }
     }
 
+    public  Map<String,String>  getUserId(String email){
+        AuthModel user = authRepository.findByEmail(email).orElseThrow(() -> new EntitiyExistsException("User not found"));
+        return user.toMap();
+    }
+
 
 }

@@ -5,12 +5,14 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { instance } from '../../../axiosConfig';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../reducers/authreducer/combinedReducers';
+import { useCreateClassMutation } from '../../../reducers/classReducer/classApis';
 
 export default function CreateClass() {
     const [open, setOpen] = useState(false);
     const name = useRef<HTMLInputElement>(null);
     const user= useSelector((state:RootState)=>state.auth);
     const [error, setError] = useState('');
+    const [createClassApi] = useCreateClassMutation();
     const handleOpen = () => {
         setOpen(true);
     };
@@ -24,11 +26,7 @@ export default function CreateClass() {
         if(name.current?.value){
             try{
 
-                const res = await instance.post('/class/', {
-                    teacher: user.id,
-                    name: name.current.value
-
-                })
+                const response = await createClassApi({name: name.current.value, teacher: user.id});
                 handleClose();
 
 

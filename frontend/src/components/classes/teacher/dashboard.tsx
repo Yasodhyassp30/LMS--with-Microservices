@@ -9,6 +9,7 @@ import CreateClass from "./createClass";
 import { Delete } from "@mui/icons-material";
 import { People } from "@mui/icons-material";
 import { useGetClassesTeacherQuery } from "../../../reducers/classReducer/classApis";
+import { useNavigate } from "react-router-dom";
 
 
 export default function TeacherDashboard() {
@@ -17,8 +18,9 @@ export default function TeacherDashboard() {
 
     const user = useSelector((state: RootState) => state.auth);
     const { data, error, isLoading } = useGetClassesTeacherQuery(user.id);
+    const [selectedClass, setSelectedClass] = React.useState<any>(null);
 
-  
+    const navigate = useNavigate();
     return (
       <div style={{
         display: "block",
@@ -43,10 +45,10 @@ export default function TeacherDashboard() {
             justifyContent: "center",
             
         }}>
-          {!isLoading && data.map((cls: any) => {
+          {!isLoading && !error && data.map((cls: any,index:number) => {
               return (
               <div
-                key={cls._id}
+                key={cls.cid}
                 style={{
                 width: "30%",
                 minWidth: "300px",
@@ -76,6 +78,9 @@ export default function TeacherDashboard() {
                     marginBottom: "10px",
                     }}
                     title="Students"
+                    onClick={() => {
+                      navigate(`/class/${cls.cid}`);
+                    }}
                     >
                     <People />
                     </Button>

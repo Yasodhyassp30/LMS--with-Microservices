@@ -79,5 +79,14 @@ public class ClassController {
         return ResponseEntity.ok(classService.getClassesByStudentId(sid));
     }
     
+    @PostMapping("/teacher/student/{cid}")
+    public ResponseEntity<?> addStudentToClass(@PathVariable UUID cid, @RequestBody Map<String,String> body) {
+        System.out.println(body.get("email"));
+        classService.addStudentToClass(cid, body.get("email"));
+        Map<String,String> response = Map.of("message", "Student added successfully");
+        return ResponseEntity.ok(response);
+    }
+
+   
     
 }

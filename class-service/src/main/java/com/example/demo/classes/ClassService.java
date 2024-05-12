@@ -5,7 +5,12 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
 import com.example.demo.errorHandler.EntityExistenceException;
 import com.example.demo.members.MemberModel;
 import com.example.demo.members.MemberRepo;
@@ -19,6 +24,10 @@ public class ClassService {
 
     @Autowired
     private MemberRepo memberRepo;
+
+    @Autowired
+    private RestTemplate restTemplate;
+
 
     public Map<String,String> createClass(ClassModel classModel) {
         Random rand = new Random();
@@ -102,5 +111,19 @@ public class ClassService {
     public List<ClassModel> getClassesByStudentId(String studentId) {
         return memberRepo.findClassesByStudentId(studentId);
     }
+
+    public void addStudentToClass(UUID cid, String email) {
+        ClassModel classModel = classRepo.findByCid(cid);
+        ResponseEntity<Map> response = restTemplate.exchange("http://auth-service/auth/user/"+email, HttpMethod.GET, null, Map.class);
+        String sid = response.getBody().get("uid").toString();
+        if(response == null){
+            throw new EntityExistenceException("User does not exist");
+        }
+        memberRepo.save(new MemberModel(null, sid, classModel));
+        if(classModel == null){
+            throw new EntityExistenceException("Class does not exist");
+        }
+    }
+    
 }
 
