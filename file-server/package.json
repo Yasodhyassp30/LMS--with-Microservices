@@ -1,0 +1,41 @@
+{
+  "name": "file-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "start:dev": "set NODE_ENV=dev && nodemon src/index.js",
+    "start:qa": "set NODE_ENV=qa && nodemon src/index.js",
+    "test": "jest",
+    "lint": "eslint ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "compression": "^1.7.4",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-http-context": "^1.2.4",
+    "helmet": "^7.1.0",
+    "morgan": "^1.10.0",
+    "winston": "^3.13.0"
+  },
+  "devDependencies": {
+    "eslint": "^8.3.0",
+    "jest": "^27.5.1",
+    "nodemon": "^2.0.15"
+  },
+  "eslintConfig": {
+    "extends": "eslint:recommended",
+    "env": {
+      "node": true,
+      "es6": true
+    }
+  },
+  "jest": {
+    "testEnvironment": "node"
+  }
+}
