@@ -4,7 +4,7 @@ import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle } 
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { instance } from '../../../axiosConfig';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../reducers/authreducer/combinedReducers';
+import { RootState } from '../../../reducers/combinedReducers';
 import { useCreateClassMutation } from '../../../reducers/classReducer/classApis';
 
 export default function CreateClass() {

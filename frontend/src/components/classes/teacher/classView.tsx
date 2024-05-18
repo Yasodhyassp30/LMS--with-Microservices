@@ -4,10 +4,17 @@ import React from 'react'
 import Students from './students'
 import { useGetSingleClassQuery } from '../../../reducers/classReducer/classApis'
 import { useParams } from 'react-router-dom'
+import { useGetUserFromIdQuery } from '../../../reducers/authreducer/authApis'
 
 export default function ClassView() {
     const cid = useParams<{id:string}>().id
     const {data,isLoading,error} = useGetSingleClassQuery(cid)
+    const teacherDetails = useGetUserFromIdQuery(
+        data?.teacher,
+        {
+            skip: !data?.teacher
+        }
+    )
 
     const [selected,setSelected] = React.useState<number>(0)
 
@@ -25,14 +32,14 @@ export default function ClassView() {
         {!isLoading&& !error &&<Box sx={{
             display:"flex",
             flexDirection:"column",
-            alignItems:"start",
+            alignItems:"center",
             margin: "10px",
         }}>
             <Typography variant="h6">
             {data.name}
             </Typography>
             <Typography variant='body1'>
-                Created By : {data.teacher}
+                Created By : {teacherDetails.data?.username}
             </Typography>
             <div style={{
                 width:"100%",

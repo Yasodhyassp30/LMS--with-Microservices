@@ -34,13 +34,24 @@ public class MemberModel {
     @JoinColumn(name = "classId", referencedColumnName = "cid")
     private ClassModel course;
 
+    @NotBlank
+    @Size(min = 1, max = 255, message = "Name must be between 1 and 255 characters")
+    private String username;
+
+    @NotBlank
+    @Size(min = 1, max = 255, message = "Email must be between 1 and 255 characters")
+    @Pattern(regexp = "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$", message = "Email is invalid")
+    private String email;
+
     public MemberModel() {
     }
 
-    public MemberModel(Long id, String sid, ClassModel course) {
+    public MemberModel(Long id, String sid, ClassModel course, String username, String email) {
         this.id = id;
         this.sid = sid;
         this.course = course;
+        this.username = username;
+        this.email = email;
     }
 
     public Long getId() {
@@ -67,11 +78,21 @@ public class MemberModel {
         this.course = course;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
     public Map<String,String> toMap() {
         Map<String, String> map = new HashMap<>();
         map.put("id", this.id.toString());
         map.put("sid", this.sid);
         map.put("course", this.course.toString());
+        map.put("username", this.username);
+        map.put("email", this.email);
         return map;
     }
 

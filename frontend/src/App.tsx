@@ -5,7 +5,7 @@ import Register from "./components/authentication/register";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import StudentDashboard from "./components/classes/students/dashboard";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "./reducers/authreducer/combinedReducers";
+import { RootState } from "./reducers/combinedReducers";
 import { authSlice } from "./reducers/authreducer/authReducer";
 import Navbar from "./components/navbar/navbar";
 import TeacherDashboard from "./components/classes/teacher/dashboard";

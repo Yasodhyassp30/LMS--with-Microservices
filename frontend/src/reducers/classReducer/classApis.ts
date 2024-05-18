@@ -1,5 +1,5 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
-import { RootState } from "../authreducer/combinedReducers";
+import { RootState } from "../combinedReducers";
 import JoinClass from "../../components/classes/students/joinClass";
 import AddStudent from "../../components/classes/teacher/addStudent";
 
@@ -85,7 +85,7 @@ export const classApi = createApi({
         url: `/teacher/remove/${cid}/${sid}`,
         method: "DELETE",
       }),
-      invalidatesTags: ["Class"],
+      invalidatesTags: ["Student"],
     }),
     AddStudent: builder.mutation({
         query: ({ cid, body }) => ({
@@ -93,7 +93,7 @@ export const classApi = createApi({
             method: "POST",
             body,
         }),
-        invalidatesTags: ["Class"],
+        invalidatesTags: ["Student"],
     })
   }),
 });

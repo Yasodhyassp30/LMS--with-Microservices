@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { instance } from "../../../axiosConfig";
 import { useSelector } from "react-redux";
-import { RootState } from "../../../reducers/authreducer/combinedReducers";
+import { RootState } from "../../../reducers/combinedReducers";
 import { Button, Typography } from "@mui/material";
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';

@@ -1,6 +1,8 @@
 package com.auth.authservice.authentication;
 
 import java.util.Map;
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,6 +37,11 @@ public class AuthController {
     @GetMapping("/user/{email}")
     public ResponseEntity<Map<String,String>> getUserId(@PathVariable String email) {
         return ResponseEntity.ok(authService.getUserId(email));
+    }
+
+    @GetMapping("/user/sid/{sid}")
+    public ResponseEntity<Map<String,String>> getUserById(@PathVariable UUID sid) {
+        return ResponseEntity.ok(authService.getUserById(sid));
     }
 
     

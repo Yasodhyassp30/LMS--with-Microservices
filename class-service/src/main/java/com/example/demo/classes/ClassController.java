@@ -68,8 +68,9 @@ public class ClassController {
     }
 
     @DeleteMapping("/teacher/remove/{cid}/{sid}")
-    public ResponseEntity<Map<String,String>> removeStudent(@PathVariable UUID cid, @PathVariable String sid) {
-        classService.removeMember(cid, sid);
+    public ResponseEntity<Map<String,String>> removeStudent(@PathVariable String cid, @PathVariable String sid) {
+        UUID classId = UUID.fromString(cid);
+        classService.removeMember(classId, sid);
         Map<String,String> response = Map.of("message", "Student removed successfully");
         return ResponseEntity.ok(response);
     }
@@ -81,7 +82,6 @@ public class ClassController {
     
     @PostMapping("/teacher/student/{cid}")
     public ResponseEntity<?> addStudentToClass(@PathVariable UUID cid, @RequestBody Map<String,String> body) {
-        System.out.println(body.get("email"));
         classService.addStudentToClass(cid, body.get("email"));
         Map<String,String> response = Map.of("message", "Student added successfully");
         return ResponseEntity.ok(response);

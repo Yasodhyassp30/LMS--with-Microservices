@@ -1,6 +1,8 @@
 package com.auth.authservice.authentication;
 
+import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -49,6 +51,14 @@ public class AuthService {
     public  Map<String,String>  getUserId(String email){
         AuthModel user = authRepository.findByEmail(email).orElseThrow(() -> new EntitiyExistsException("User not found"));
         return user.toMap();
+    }
+
+    public Map<String,String> getUserById(UUID id) {
+       List <AuthModel> users = authRepository.findByUid(id);
+         if(users.isEmpty()){
+              throw new EntitiyExistsException("User not found");
+            }
+        return users.get(0).toMap();
     }
 
 

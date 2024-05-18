@@ -4,9 +4,10 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { configureStore } from '@reduxjs/toolkit';
-import combinedReducers from './reducers/authreducer/combinedReducers';
+import combinedReducers from './reducers/combinedReducers';
 import { Provider } from 'react-redux';
 import { classApi } from './reducers/classReducer/classApis';
+import { authApi } from './reducers/authreducer/authApis';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -16,7 +17,7 @@ export const store = configureStore({
   reducer: combinedReducers,
 
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(classApi.middleware).concat((middlewareAPI) => (next) => (action: any) => {
+    getDefaultMiddleware().concat(classApi.middleware).concat(authApi.middleware).concat((middlewareAPI) => (next) => (action: any) => {
      
         
         const user = JSON.parse(localStorage.getItem('user') as string);

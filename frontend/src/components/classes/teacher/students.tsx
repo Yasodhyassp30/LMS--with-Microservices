@@ -1,4 +1,4 @@
-import { Email } from '@mui/icons-material'
+import { Email, Person } from '@mui/icons-material'
 import { Box, Button, Card, Typography } from '@mui/material'
 import React from 'react'
 import { useParams } from 'react-router-dom'
@@ -12,7 +12,7 @@ export default function Students() {
     const [removeStudent] = useRemoveStudentMutation()
 
     const handleRemove = async (sid:string) => {
-       await removeStudent({cid:classId,sid})
+       await removeStudent({cid:classId,sid:sid})
     }
     
   return (
@@ -37,9 +37,7 @@ export default function Students() {
                       <div style={{
                        width:"60%",
                       }}>
-                          <Typography variant="body1">
-                            {student.name}
-                        </Typography>
+                         
                         <Typography variant="body1" sx={{
                             display:"flex",
                             flexDirection:"row",
@@ -49,12 +47,24 @@ export default function Students() {
                                 marginRight:"5px"
 
                             }}/>
-                            : {student.Email}
+                            : {student.email}
+                        </Typography>
+
+                        <Typography variant="body1" sx={{
+                            display:"flex",
+                            flexDirection:"row",
+                            alignItems:"center"
+                        }}>
+                            <Person sx={{
+                                marginRight:"5px"
+
+                            }}/>
+                            : {student.username}
                         </Typography>
                       </div>
                       <div>
                         <Button variant="contained" color='error' onClick={
-                            ()=>handleRemove(student._id)
+                            ()=>handleRemove(student.sid)
                         }>
                             Remove
                         </Button>

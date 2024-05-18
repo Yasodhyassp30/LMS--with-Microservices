@@ -4,7 +4,7 @@ import { Button, TextField, Dialog, DialogActions, DialogContent, DialogTitle } 
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import { instance } from '../../../axiosConfig';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../reducers/authreducer/combinedReducers';
+import { RootState } from '../../../reducers/combinedReducers';
 
 export default function JoinClass() {
     const [open, setOpen] = useState(false);
