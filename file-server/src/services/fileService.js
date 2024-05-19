@@ -2,39 +2,96 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { FILE_FOLDER } from '../configs/configs.js';
+import { directoryExists } from '../utils/fileUtils.js';
 
-export const getAllFiles = async (req, res) => {
+export const downloadFile = async (category, fileName) => {
     const __dirname = fileURLToPath(new URL(import.meta.url));
-    const folderPath = path.join(__dirname, '..', '..', '..', FILE_FOLDER);
+    const folderPath = path.join(__dirname, '..', '..', '..', FILE_FOLDER, category);
 
     try {
-        // Check if the directory exists
         const folderExists = await directoryExists(folderPath);
         if (!folderExists) {
-            return ({ error: `Directory ${folderPath} not found` });
+            throw new Error(`Directory ${folderPath} not found`);
         }
 
-        // Read the contents of the folder
-        const files = await fs.promises.readdir(folderPath);
-        if (files.length === 0) {
-            return ({ error: 'No files found' });
+        const filePath = path.join(folderPath, fileName);
+
+        const fileExists = await fs.promises.access(filePath).then(() => true).catch(() => false);
+        if (!fileExists) {
+            throw new Error(`File ${fileName} not found in category ${category}`);
         }
 
-        res.json(files);
+        return filePath;
     } catch (error) {
-        console.error('Error reading files:', error);
-        return ({ error: 'Internal server error' });
+        console.error('Error fetching file:', error);
+        throw error;
     }
 };
 
-async function directoryExists(folderPath) {
+export const getFilesInDirectory = async (category) => {
+    const __dirname = fileURLToPath(new URL(import.meta.url));
+    const folderPath = path.join(__dirname, '..', '..', '..', FILE_FOLDER, category);
     try {
-        const stats = await fs.promises.stat(folderPath);
-        return stats.isDirectory();
-    } catch (error) {
-        if (error.code === 'ENOENT') {
-            return false;
+        const folderExists = await directoryExists(folderPath);
+        if (!folderExists) {
+            throw new Error(`Directory ${folderPath} not found`);
         }
+
+        const files = await fs.promises.readdir(folderPath);
+        if (files.length === 0) {
+            throw new Error('No files found');
+        }
+
+        return files;
+    } catch (error) {
+        console.error('Error reading files:', error);
         throw error;
     }
-}
+};
+
+export const addFile = async (category, file) => {
+    const __dirname = fileURLToPath(new URL(import.meta.url));
+    const folderPath = path.join(__dirname, '..', '..', '..', FILE_FOLDER, category);
+    
+    try {
+        const folderExists = await directoryExists(folderPath);
+        if (!folderExists) {
+            await fs.promises.mkdir(folderPath, { recursive: true });
+        }
+
+        const filePath = path.join(folderPath, file.originalname);
+        await fs.promises.writeFile(filePath, file.buffer);
+
+        return filePath;
+    } catch (error) {
+        console.error('Error uploading file:', error);
+        throw error;
+    }
+};
+
+export const deleteFile = async (category, fileName) => {
+    const __dirname = fileURLToPath(new URL(import.meta.url));
+    const folderPath = path.join(__dirname, '..', '..', '..', FILE_FOLDER, category);
+
+    try {
+        const folderExists = await directoryExists(folderPath);
+        if (!folderExists) {
+            throw new Error(`Directory ${folderPath} not found`);
+        }
+
+        const filePath = path.join(folderPath, fileName);
+
+        const fileExists = await fs.promises.access(filePath).then(() => true).catch(() => false);
+        if (!fileExists) {
+            throw new Error(`File ${fileName} not found in category ${category}`);
+        }
+
+        await fs.promises.unlink(filePath);
+
+        return { message: `File ${fileName} deleted successfully from category ${category}` };
+    } catch (error) {
+        console.error('Error deleting file:', error);
+        throw error;
+    }
+};
+
