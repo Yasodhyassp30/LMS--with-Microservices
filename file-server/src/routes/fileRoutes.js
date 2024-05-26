@@ -5,9 +5,10 @@ import * as fileController from '../controllers/fileController.js';
 const upload = multer();
 const fileRoutes = Router();
 
-fileRoutes.get('/:category/:fileName', fileController.downloadFile);
-fileRoutes.get('/:category', fileController.getFilesInDirectory);
-fileRoutes.post('/:category', upload.single('file'), fileController.addFile);
-fileRoutes.delete('/:category/:fileName', fileController.deleteFile);
+fileRoutes.get('/:user/:category', fileController.getFilesInDirectory);
+fileRoutes.post('/:user/:category', upload.single('file'), fileController.addFile);
+fileRoutes.delete('/:user/:category/:fileName', fileController.deleteFile);
+fileRoutes.get('/:user/:category/:fileName', fileController.downloadFile);
+
 
 export default fileRoutes;
