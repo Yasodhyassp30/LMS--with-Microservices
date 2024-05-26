@@ -26,5 +26,6 @@ replay_pid*
 ./vscode
 vscode
 
-quiz-service/venv
-quiz-service/__pycache__
+quiz-service/__pycache__/
+quiz-service/.pytest_cache
+quiz-service/venv/

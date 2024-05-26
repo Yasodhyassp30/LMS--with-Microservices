@@ -4,9 +4,9 @@ import { fileURLToPath } from 'url';
 import { FILE_FOLDER } from '../configs/configs.js';
 import { directoryExists } from '../utils/fileUtils.js';
 
-export const downloadFile = async (category, fileName) => {
+export const downloadFile = async (category, fileName, user) => {
     const __dirname = fileURLToPath(new URL(import.meta.url));
-    const folderPath = path.join(__dirname, '..', '..', '..', FILE_FOLDER, category);
+    const folderPath = path.join(__dirname, '..', '..', '..', FILE_FOLDER, user, category);
 
     try {
         const folderExists = await directoryExists(folderPath);
@@ -28,18 +28,18 @@ export const downloadFile = async (category, fileName) => {
     }
 };
 
-export const getFilesInDirectory = async (category) => {
+export const getFilesInDirectory = async (category, user) => {
     const __dirname = fileURLToPath(new URL(import.meta.url));
-    const folderPath = path.join(__dirname, '..', '..', '..', FILE_FOLDER, category);
+    const folderPath = path.join(__dirname, '..', '..', '..', FILE_FOLDER, user, category);
     try {
         const folderExists = await directoryExists(folderPath);
         if (!folderExists) {
-            throw new Error(`Directory ${folderPath} not found`);
+            return []
         }
 
         const files = await fs.promises.readdir(folderPath);
         if (files.length === 0) {
-            throw new Error('No files found');
+            return []
         }
 
         return files;
@@ -49,9 +49,9 @@ export const getFilesInDirectory = async (category) => {
     }
 };
 
-export const addFile = async (category, file) => {
+export const addFile = async (category, user, file) => {
     const __dirname = fileURLToPath(new URL(import.meta.url));
-    const folderPath = path.join(__dirname, '..', '..', '..', FILE_FOLDER, category);
+    const folderPath = path.join(__dirname, '..', '..', '..', FILE_FOLDER, user, category);
     
     try {
         const folderExists = await directoryExists(folderPath);
@@ -69,9 +69,9 @@ export const addFile = async (category, file) => {
     }
 };
 
-export const deleteFile = async (category, fileName) => {
+export const deleteFile = async (category, fileName, user) => {
     const __dirname = fileURLToPath(new URL(import.meta.url));
-    const folderPath = path.join(__dirname, '..', '..', '..', FILE_FOLDER, category);
+    const folderPath = path.join(__dirname, '..', '..', '..', FILE_FOLDER, user, category);
 
     try {
         const folderExists = await directoryExists(folderPath);

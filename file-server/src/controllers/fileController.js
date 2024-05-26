@@ -2,12 +2,17 @@ import fs from 'fs';
 import * as fileService from '../services/fileService.js';
 
 export const getFilesInDirectory = async (req, res, next) => {
-    const { category } = req.params;
+    const { category, user } = req.params;
     if(!category) {
         return res.status(400).json({ error: 'Category must be provided' });
     }
+
+    if(!user) {
+        return res.status(400).json({ error: 'Category must be provided' });
+    }
+
     try {
-        const files = await fileService.getFilesInDirectory(category);
+        const files = await fileService.getFilesInDirectory(category, user);
         res.json(files);
     } catch (error) {
         if (error.message.includes('not found')) {
@@ -20,16 +25,20 @@ export const getFilesInDirectory = async (req, res, next) => {
 }
 
 export const addFile = async (req, res, next) => {
-    const { category } = req.params;
+    const { category, user } = req.params;
     if(!category) {
         return res.status(400).json({ error: 'Category must be provided' });
+    }
+
+    if(!user) {
+        return res.status(400).json({ error: 'User must be provided' });
     }
 
     if (!req.file) {
         return res.status(400).json({ error: 'File must be provided' });
     }
     try {
-        await fileService.addFile(category, req.file);
+        await fileService.addFile(category, user, req.file);
         res.json({ message: 'File uploaded successfully' });
     } catch (error) {
         if (error.message.includes('not found')) {
@@ -42,12 +51,12 @@ export const addFile = async (req, res, next) => {
 }
 
 export const downloadFile = async (req, res, next) => {
-    const { category, fileName } = req.params;
+    const { category, fileName, user } = req.params;
     if(!(category && fileName)) {
         return res.status(400).json({ error: 'Category and file name must be provided' });
     }
     try {
-        const filePath = await fileService.downloadFile(category, fileName);
+        const filePath = await fileService.downloadFile(category, fileName, user);
         
         res.setHeader('Content-Disposition', `attachment; filename="${fileName}"`);
         res.setHeader('Content-Type', 'application/octet-stream');
@@ -70,12 +79,12 @@ export const downloadFile = async (req, res, next) => {
 };
 
 export const deleteFile = async (req, res, next) => {
-    const { category, fileName } = req.params;
+    const { category, fileName, user } = req.params;
     if(!(category && fileName)) {
         return res.status(400).json({ error: 'Category and file name must be provided' });
     }
     try {
-        await fileService.deleteFile(category, fileName);
+        await fileService.deleteFile(category, fileName, user);
         res.json({ message: `File ${fileName} deleted successfully from category ${category}` });
     } catch (error) {
         if (error.message.includes('not found')) {
