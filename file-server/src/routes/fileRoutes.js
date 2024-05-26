@@ -7,8 +7,8 @@ const fileRoutes = Router();
 
 fileRoutes.get('/:user/:category', fileController.getFilesInDirectory);
 fileRoutes.post('/:user/:category', upload.single('file'), fileController.addFile);
-fileRoutes.delete('/:user/:category/:fileName', fileController.deleteFile);
 fileRoutes.get('/:user/:category/:fileName', fileController.downloadFile);
+fileRoutes.delete('/:user/:category/:fileName', fileController.deleteFile);
 
 
 export default fileRoutes;

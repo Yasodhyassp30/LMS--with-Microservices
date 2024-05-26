@@ -3,8 +3,8 @@ import { APP_HOST, APP_PORT } from "./configs/configs.js";
 
 const eurekaClient = new Eureka({
   instance: {
-    app: "nodejs-service",
-    instanceId: "nodejs-service-1",
+    app: "lms-service",
+    instanceId: "file-service-v1",
     hostName: APP_HOST,
     ipAddr: "127.0.0.1",
     statusPageUrl: `http://${APP_HOST}:${APP_PORT}/status`,
@@ -12,7 +12,7 @@ const eurekaClient = new Eureka({
       $: APP_PORT,
       "@enabled": true,
     },
-    vipAddress: "nodejs-service",
+    vipAddress: "lms-service",
     dataCenterInfo: {
       "@class": "com.netflix.appinfo.InstanceInfo$DefaultDataCenterInfo",
       name: "MyOwn",
