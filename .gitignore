@@ -29,3 +29,8 @@ vscode
 quiz-service/__pycache__/
 quiz-service/.pytest_cache
 quiz-service/venv/
+# Ignore __pycache__ directories
+__pycache__/
+
+# Ignore .pyc files
+*.pyc
