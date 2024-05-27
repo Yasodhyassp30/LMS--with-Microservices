@@ -55,7 +55,7 @@ public class ClassService {
 
     public void joinClass(UUID cid, String sid, String joinCode) {
         ClassModel classModel = classRepo.findByCid(cid);
-        Optional<MemberModel> memberModel = memberRepo.findBySid(sid);
+        Optional<MemberModel> memberModel = memberRepo.findStudentInClass(sid, cid);
 
         if(memberModel.isPresent()){
             throw new EntityExistenceException("Student already in class");
@@ -79,7 +79,7 @@ public class ClassService {
 
     public void leaveClass(UUID cid, String sid) {
         ClassModel classModel = classRepo.findByCid(cid);
-        Optional<MemberModel> memberModel = memberRepo.findBySid(sid);
+        Optional<MemberModel> memberModel = memberRepo.findStudentInClass(sid, cid);
         if(!memberModel.isPresent()){
             throw new EntityExistenceException("Student not in class");
         }

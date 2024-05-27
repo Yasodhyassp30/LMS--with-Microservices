@@ -15,7 +15,7 @@ import java.util.Map;
 
 
 @RestController
-@RequestMapping("/class")
+@RequestMapping("/classes")
 public class ClassController {
 
     @Autowired
@@ -31,7 +31,7 @@ public class ClassController {
         return ResponseEntity.ok(classService.getClassById(cid));
     }
 
-    @GetMapping("/teacher/{teacher}")
+    @GetMapping("/teachers/{teacher}")
     public ResponseEntity<?> getClassesbyTeacher(@PathVariable String teacher) {
         return ResponseEntity.ok(classService.getAllClassesByTeacher(teacher));
     }
@@ -43,21 +43,21 @@ public class ClassController {
         return ResponseEntity.ok(response);
     }    
 
-    @PostMapping("/student/join/{cid}")
+    @PostMapping("/students/join/{cid}")
     public ResponseEntity<?> joinClass(@PathVariable UUID cid, @RequestBody Map<String,String> body) {
         classService.joinClass(cid, body.get("sid"), body.get("joinCode"));
         Map<String,String> response = Map.of("message", "Joined class successfully");
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/student/leave/{cid}")
+    @PostMapping("/students/leave/{cid}")
     public ResponseEntity<?> leaveClass(@PathVariable UUID cid, @RequestBody Map<String,String> body) {
         classService.leaveClass(cid, body.get("sid"));
         Map<String,String> response = Map.of("message", "Left class successfully");
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/student/{cid}")
+    @GetMapping("/students/{cid}")
     public ResponseEntity<?> getStudentsInClass(@PathVariable UUID cid) {
         return ResponseEntity.ok(classService.getMembers(cid));
     }
@@ -67,7 +67,7 @@ public class ClassController {
         return ResponseEntity.ok(classService.getJoinCode(cid));
     }
 
-    @DeleteMapping("/teacher/remove/{cid}/{sid}")
+    @DeleteMapping("/teachers/remove/{cid}/{sid}")
     public ResponseEntity<Map<String,String>> removeStudent(@PathVariable String cid, @PathVariable String sid) {
         UUID classId = UUID.fromString(cid);
         classService.removeMember(classId, sid);
@@ -75,12 +75,12 @@ public class ClassController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/student/classes/{sid}")
+    @GetMapping("/students/classes/{sid}")
     public ResponseEntity<?> getClassesByStudentId(@PathVariable String sid) {
         return ResponseEntity.ok(classService.getClassesByStudentId(sid));
     }
     
-    @PostMapping("/teacher/student/{cid}")
+    @PostMapping("/teachers/students/{cid}")
     public ResponseEntity<?> addStudentToClass(@PathVariable UUID cid, @RequestBody Map<String,String> body) {
         classService.addStudentToClass(cid, body.get("email"));
         Map<String,String> response = Map.of("message", "Student added successfully");

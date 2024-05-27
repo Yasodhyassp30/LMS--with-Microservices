@@ -10,10 +10,22 @@ spring:
                   uri: lb://auth-service
                   predicates:
                     - Path=/auth/**
+                - id: quiz-service
+                  uri: lb://quiz-service
+                  predicates:
+                    - Path=/quizzes/**
+                  filters:
+                    - AuthFilter
                 - id : class-service
                   uri: lb://class-service
                   predicates:
-                    - Path=/class/**
+                    - Path=/classes/**
+                  filters:
+                    - AuthFilter
+                - id : file-service
+                  uri: lb://file-service
+                  predicates:
+                    - Path=/files/**
                   filters:
                     - AuthFilter
         

@@ -6,7 +6,7 @@ import AddStudent from "../../components/classes/teacher/addStudent";
 export const classApi = createApi({
   reducerPath: "classApi",
   baseQuery: fetchBaseQuery({
-    baseUrl: "http://localhost:8080/class",
+    baseUrl: "http://localhost:8080/classes",
     prepareHeaders: (headers, { getState }) => {
       const token = (getState() as RootState).auth.token;
       if (token) {
@@ -38,17 +38,17 @@ export const classApi = createApi({
     }),
     getClassesTeacher: builder.query({
       query: (id) => ({
-        url: `/teacher/${id}`,
+        url: `/teachers/${id}`,
         method: "GET",
       }),
       providesTags: ["Class"],
     }),
     getClassesStudent: builder.query({
       query: (id) => ({
-        url: `/student/classes/${id}`,
+        url: `/students/classes/${id}`,
         method: "GET",
       }),
-      providesTags: ["Class"],
+      providesTags: ["Class","Student"],
     }),
     deleteClass: builder.mutation({
       query: (id) => ({
@@ -59,37 +59,37 @@ export const classApi = createApi({
     }),
     getStudents: builder.query({
       query: (id) => ({
-        url: `/student/${id}`,
+        url: `/students/${id}`,
         method: "GET",
       }),
       providesTags: ["Student"],
     }),
     JoinClass: builder.mutation({
       query: ({ id, body }) => ({
-        url: `/student/join/${id}`,
+        url: `/students/join/${id}`,
         method: "POST",
         body,
       }),
-      invalidatesTags: ["Class"],
+      invalidatesTags: ["Class","Student"],
     }),
     leaveClass: builder.mutation({
       query: ({ id, body }) => ({
-        url: `/student/leave/${id}`,
+        url: `/students/leave/${id}`,
         method: "POST",
         body,
       }),
-      invalidatesTags: ["Class"],
+      invalidatesTags: ["Class","Student"],
     }),
     removeStudent: builder.mutation({
       query: ({ cid, sid }) => ({
-        url: `/teacher/remove/${cid}/${sid}`,
+        url: `/teachers/removes/${cid}/${sid}`,
         method: "DELETE",
       }),
       invalidatesTags: ["Student"],
     }),
     AddStudent: builder.mutation({
         query: ({ cid, body }) => ({
-            url: `/teacher/student/${cid}`,
+            url: `/teachers/students/${cid}`,
             method: "POST",
             body,
         }),

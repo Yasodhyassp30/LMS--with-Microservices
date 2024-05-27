@@ -6,11 +6,22 @@ import AssignmentIcon from '@mui/icons-material/Assignment';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import JoinClass from "./joinClass";
-import { useGetClassesStudentQuery } from "../../../reducers/classReducer/classApis";
+import { useGetClassesStudentQuery, useLeaveClassMutation } from "../../../reducers/classReducer/classApis";
 
 export default function StudentDashboard() {
   const user = useSelector((state: RootState) => state.auth);
   const { data, error, isLoading } = useGetClassesStudentQuery(user.id);
+  const [leaveclass] = useLeaveClassMutation();
+
+  const handle_leave = (id: string, sid:string) => {
+    console.log("Leaving class with id: ", id);
+    leaveclass({
+      id: id,
+      body: {
+        sid: sid
+      }
+    });
+  }
 
   return (
     <div style={{
@@ -30,7 +41,7 @@ export default function StudentDashboard() {
       <JoinClass/>
       </div>
       <div>
-        {isLoading && (data ?? []).map((cls: any) => {
+        {!isLoading && (data ?? []).map((cls: any) => {
             return (
             <div
               key={cls._id}
@@ -76,7 +87,9 @@ export default function StudentDashboard() {
               >
                 <AssignmentIcon />
               </Button>
-              <Button variant="contained" color="error" title="Leave Class">
+              <Button variant="contained" color="error" title="Leave Class" onClick={
+                () => handle_leave(cls.cid, user.id)
+              }>
                 <ExitToAppIcon />
               </Button>
               </div>

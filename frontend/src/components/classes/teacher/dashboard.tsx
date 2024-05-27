@@ -8,7 +8,7 @@ import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import CreateClass from "./createClass";
 import { Delete } from "@mui/icons-material";
 import { People } from "@mui/icons-material";
-import { useGetClassesTeacherQuery } from "../../../reducers/classReducer/classApis";
+import { useDeleteClassMutation, useGetClassesTeacherQuery } from "../../../reducers/classReducer/classApis";
 import { useNavigate } from "react-router-dom";
 
 
@@ -19,8 +19,12 @@ export default function TeacherDashboard() {
     const user = useSelector((state: RootState) => state.auth);
     const { data, error, isLoading } = useGetClassesTeacherQuery(user.id);
     const [selectedClass, setSelectedClass] = React.useState<any>(null);
+    const [deleteClass] = useDeleteClassMutation();
 
     const navigate = useNavigate();
+    const handleDelete = (cid: string) => {
+      deleteClass(cid);
+    }
     return (
       <div style={{
         display: "block",
@@ -104,7 +108,9 @@ export default function TeacherDashboard() {
                 >
                   <AssignmentIcon />
                 </Button>
-                <Button variant="contained" color="error" title="Delete Class">
+                <Button variant="contained" color="error" title="Delete Class" onClick={
+                  () => handleDelete(cls.cid)
+                }>
                   <Delete />
                 </Button>
                 </div>
