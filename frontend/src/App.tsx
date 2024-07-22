@@ -1,3 +1,4 @@
+// src/App.tsx
 import React, { useEffect } from "react";
 import "./App.css";
 import Login from "./components/authentication/login";
@@ -12,6 +13,17 @@ import TeacherDashboard from "./components/classes/teacher/dashboard";
 import { SYSTEM_USER_TYPES } from "./commonContsnats";
 import PageNotFound from "./components/common/pageNotFound";
 import ClassView from "./components/classes/teacher/classView";
+
+import CreateQuiz from "./components/quiz/CreateQuiz";
+import GetQuiz from "./components/quiz/GetQuiz";
+import ListQuizzes from "./components/quiz/ListQuizzes";
+import CheckAnswers from "./components/quiz/CheckAnswers";
+import DeleteQuiz from "./components/quiz/DeleteQuiz";
+
+import RecordGrade from "./components/grade/RecordGrade";
+import GetStudentGrades from "./components/grade/GetStudentGrades";
+import GetCourseGrades from "./components/grade/GetCourseGrades";
+import UpdateGrade from "./components/grade/UpdateGrade";
 
 function App() {
   const dispatch = useDispatch();
@@ -67,6 +79,15 @@ function App() {
           <Route path="/class/:id" element={
             user.token !== "" ? <ClassView/> : <Navigate to="/login" />
           }/>
+          <Route path="/create-quiz" element={<CreateQuiz />} />
+          <Route path="/get-quiz" element={<GetQuiz />} />
+          <Route path="/list-quizzes" element={<ListQuizzes />} />
+          <Route path="/check-answers" element={<CheckAnswers />} />
+          <Route path="/delete-quiz" element={<DeleteQuiz />} />
+          <Route path="/record-grade" element={<RecordGrade />} />
+          <Route path="/get-student-grades" element={<GetStudentGrades />} />
+          <Route path="/get-course-grades" element={<GetCourseGrades />} />
+          <Route path="/update-grade" element={<UpdateGrade />} />
         </Routes>
       </BrowserRouter>
     </div>
