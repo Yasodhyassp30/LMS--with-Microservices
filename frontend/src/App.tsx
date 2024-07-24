@@ -24,6 +24,7 @@ import RecordGrade from "./components/grade/RecordGrade";
 import GetStudentGrades from "./components/grade/GetStudentGrades";
 import GetCourseGrades from "./components/grade/GetCourseGrades";
 import UpdateGrade from "./components/grade/UpdateGrade";
+import QuizDetail from "./components/quiz/quizDetails";
 
 function App() {
   const dispatch = useDispatch();
@@ -48,7 +49,7 @@ function App() {
       <Navbar />
       <BrowserRouter>
         <Routes>
-          <Route
+          {/* <Route
             path="/login"
             element={
               user.token === "" ? <Login /> : <Navigate to="/dashboard" />
@@ -78,10 +79,11 @@ function App() {
           />
           <Route path="/class/:id" element={
             user.token !== "" ? <ClassView/> : <Navigate to="/login" />
-          }/>
+          }/> */}
           <Route path="/create-quiz" element={<CreateQuiz />} />
           <Route path="/get-quiz" element={<GetQuiz />} />
           <Route path="/list-quizzes" element={<ListQuizzes />} />
+          <Route path="/quiz/:quizId" element={<QuizDetail/>} />
           <Route path="/check-answers" element={<CheckAnswers />} />
           <Route path="/delete-quiz" element={<DeleteQuiz />} />
           <Route path="/record-grade" element={<RecordGrade />} />

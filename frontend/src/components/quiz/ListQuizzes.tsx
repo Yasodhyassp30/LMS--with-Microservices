@@ -1,37 +1,70 @@
-// src/components/quiz/ListQuizzes.tsx
-import React, { useState } from 'react';
-import { Button, Typography, Container, Box, Paper } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import axios from 'axios';
+import { Button, Card, CardContent, Typography, IconButton, Container, Box, CardActionArea } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 
-const dummyQuizzes = [
-  { quizId: 1, title: 'Distributed Systems Quiz 1', description: 'Basic concepts of distributed systems.', scheduledTime: '2024-07-20T10:00' },
-  { quizId: 2, title: 'Distributed Systems Quiz 2', description: 'Advanced topics in distributed systems.', scheduledTime: '2024-07-21T10:00' },
-  { quizId: 3, title: 'Distributed Systems Quiz 3', description: 'Distributed algorithms.', scheduledTime: '2024-07-22T10:00' },
-  { quizId: 4, title: 'Distributed Systems Quiz 4', description: 'Consensus protocols.', scheduledTime: '2024-07-23T10:00' },
-  { quizId: 5, title: 'Distributed Systems Quiz 5', description: 'CAP theorem.', scheduledTime: '2024-07-24T10:00' },
-];
+interface Quiz {
+  quiz_id: number;
+  title: string;
+  description: string;
+  scheduled_time: string;
+}
 
 const ListQuizzes: React.FC = () => {
-  const [quizzes, setQuizzes] = useState<any[]>([]);
+  const [quizzes, setQuizzes] = useState<Quiz[]>([]);
 
-  const handleFetch = () => {
-    setQuizzes(dummyQuizzes);
+  useEffect(() => {
+    const fetchQuizzes = async () => {
+      try {
+        const response = await axios.get('http://127.0.0.1:8000/quizzes');
+        setQuizzes(response.data);
+      } catch (error) {
+        console.error('Error fetching quizzes:', error);
+      }
+    };
+
+    fetchQuizzes();
+  }, []);
+
+  const handleDelete = (quizId: number) => {
+    axios.delete(`http://127.0.0.1:8000/quiz/${quizId}`).then(response => {
+      toast.success('Quiz deleted successfully!');
+      setQuizzes(quizzes.filter(quiz => quiz.quiz_id !== quizId));
+    }).catch(error => {
+      toast.error('Failed to delete quiz!');
+    });
   };
 
   return (
     <Container>
       <Typography variant="h4" gutterBottom>List Quizzes</Typography>
-      <Button variant="contained" color="primary" onClick={handleFetch}>Search Available Quizzes</Button>
       {quizzes.length > 0 && (
         <Box mt={2}>
           {quizzes.map((quiz) => (
-            <Paper key={quiz.quizId} style={{ padding: '16px', marginBottom: '16px' }}>
-              <Typography variant="h5">{quiz.title}</Typography>
-              <Typography variant="body1">{quiz.description}</Typography>
-              <Typography variant="body2">{quiz.scheduledTime}</Typography>
-            </Paper>
+            <Card key={quiz.quiz_id} style={{ marginBottom: '16px' }}>
+              <CardActionArea component={Link} to={`/quiz/${quiz.quiz_id}`}>
+                <CardContent>
+                  <Typography variant="h5">{quiz.title}</Typography>
+                  <Typography variant="body1">{quiz.description}</Typography>
+                  <Typography variant="body2">{new Date(quiz.scheduled_time).toLocaleString()}</Typography>
+                </CardContent>
+              </CardActionArea>
+              <IconButton
+                edge="end"
+                aria-label="delete"
+                onClick={() => handleDelete(quiz.quiz_id)}
+                style={{ float: 'right' }}
+              >
+                <DeleteIcon />
+              </IconButton>
+            </Card>
           ))}
         </Box>
       )}
+      <ToastContainer />
     </Container>
   );
 };
