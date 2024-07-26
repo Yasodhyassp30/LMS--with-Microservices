@@ -100,7 +100,7 @@ ResponseEntity<Map> response = restTemplate.exchange(
     null, 
     Map.class
 );
-
+```
 ## User Interface
 
 ### Implementation Details
