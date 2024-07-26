@@ -47,32 +47,43 @@ The microservices are implemented using the Netflix software stack, specifically
   - `POST /auth/register`: User registration.
   - JWT validation is attached to API gatway server as a request filter.
 - **Inter-service interactions**: Provides JWT validation for other services.
-- ![Authentication Flow Diagram](auth.png)
+#![Authentication Flow Diagram](auth.png)
 
-#### File Upload Service
+### File Upload Service
 - **Functionality**: Manages file uploads.
 - **REST API Endpoints**:
-  - `POST /files/upload`: Upload a file.
-  - `GET /files/{id}`: Retrieve a file by ID.
-  - `DELETE /files/{id}`: Delete a file by ID.
-  - `GET /files`: List all files.
+  ```http
+  POST /files/upload                    # Upload a file
+  GET /files/{filename}                 # Download a file by filename
+  DELETE /files/{filename}              # Delete a file by filename
+  GET /files                            # List all files
 - **Inter-service interactions**: Provides file access to class and quiz services.
 
-#### Quiz Service
+### Quiz Service
 - **Functionality**: Manages quizzes and grading.
 - **REST API Endpoints**:
-  - `GET /quizzes`: Retrieve all quizzes.
-  - `POST /quizzes`: Create a new quiz.
-  - `GET /quizzes/{id}`: Retrieve a specific quiz by ID.
-  - `POST /quizzes/{id}/grade`: Grade a quiz submission.
+  ```http
+  POST /quiz                             # Create Quiz
+  GET /quiz/{quiz_id}                    # Get Quiz
+  DELETE /quiz/{quiz_id}                 # Delete Quiz
+  GET /quizzes                           # List Quizzes
+  POST /quiz/{quiz_id}/check-answers     # Check Answers
 - **Inter-service interactions**: Consumes file upload service for quiz resources.
+### Grading Service
+- **Functionality**: Manages grades for quizzes and courses.
+- **REST API Endpoints**:
+  ```http
+  POST /grades                          # Save grades
+  GET /grades                           # Retrieve all grades
+  GET /grades/{class_id}/{course_id}    # Retrieve grades for a specific class and course
+  PUT /grades/{grade_id}                # Update a specific grade
 
 ### Discovery Server
 The services register with the Netflix Eureka discovery server, which monitors and maintains a registry of available services. Each service registers upon startup and periodically sends heartbeat signals to the server to indicate its health status.
 
 ### API Gateway
 The Spring Cloud Gateway serves as the API gateway, routing requests to the appropriate services based on predefined configurations. It handles cross-cutting concerns such as security, rate limiting, and load balancing.
-![Gateway Configuration Diagram](gateway.png)
+#![Gateway Configuration Diagram](gateway.png)
 ###Interservice Communications are done using Rest Templates ex:
 ResponseEntity<Map> response = restTemplate.exchange(
     "http://auth-service/auth/user/sid/" + sid, 
