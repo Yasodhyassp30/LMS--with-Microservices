@@ -91,14 +91,16 @@ The services register with the Netflix Eureka discovery server, which monitors a
 The Spring Cloud Gateway serves as the API gateway, routing requests to the appropriate services based on predefined configurations. It handles cross-cutting concerns such as security, rate limiting, and load balancing.
 #![Gateway Configuration Diagram](gateway.png)
 
-##Interservice Communications are done using Rest Templates 
-ex:
+### Interservice Communications are done using Rest Templates for Springboot and Eureka Client based methods for other languages such as NodeJS or Python.
+- **ex**:
+```java
 ResponseEntity<Map> response = restTemplate.exchange(
     "http://auth-service/auth/user/sid/" + sid, 
     HttpMethod.GET, 
     null, 
     Map.class
 );
+
 ## User Interface
 
 ### Implementation Details
