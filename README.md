@@ -14,7 +14,8 @@ The application is divided into multiple microservices to ensure scalability, ma
 - **Authentication Service**: Handles user authentication and JWT token management.
 - **File Upload Service**: Manages file uploads.
 - **Quiz Service**: Manages quiz creation.
-- **Grading Service*: Evaluate and grade quizzes
+- **Grading Service**: Evaluate and grade quizzes
+Each Services are paired with their own database systems to operate independently and communication is mainly based on REST apis for both interservice and client communications.
 
 ## Microservices
 
@@ -24,7 +25,8 @@ The microservices are implemented using the Netflix software stack, specifically
 ### Core Services
 
 ### Class Service
-- **Functionality**: Manages class-related operations.
+- Springboot, PostgresSQL database
+- **Functionality**: Manages class-related operations such as Create classes, Join, remove or Leave classes.
 - **REST API Endpoints**:
   ```http
   GET /classes/{classid}                 # Get single class details
@@ -41,16 +43,18 @@ The microservices are implemented using the Netflix software stack, specifically
 - **Inter-service interactions**: Consumes authentication service for verifying user access.
 
 #### Authentication Service
+- Springboot, PostgresSQL database
 - **Functionality**: Manages user authentication and JWT tokens.
 - **REST API Endpoints**:
   - `POST /auth/login`: User login.
   - `POST /auth/register`: User registration.
   - JWT validation is attached to API gatway server as a request filter.
-- **Inter-service interactions**: Provides JWT validation for other services.
+- **Inter-service interactions**: Provides JWT validation and user role validations or user existence checks for other services.
 #![Authentication Flow Diagram](auth.png)
 
 ### File Upload Service
-- **Functionality**: Manages file uploads.
+- NodeJS With Express Framework
+- **Functionality**: Manages file uploads such as lecture materials.
 - **REST API Endpoints**:
   ```http
   POST /files/upload                    # Upload a file
@@ -60,7 +64,8 @@ The microservices are implemented using the Netflix software stack, specifically
 - **Inter-service interactions**: Provides file access to class and quiz services.
 
 ### Quiz Service
-- **Functionality**: Manages quizzes and grading.
+- FastAPI with Python
+- **Functionality**: Manages quizzes by providing endpoints for creation, get and check answers.
 - **REST API Endpoints**:
   ```http
   POST /quiz                             # Create Quiz
@@ -70,6 +75,7 @@ The microservices are implemented using the Netflix software stack, specifically
   POST /quiz/{quiz_id}/check-answers     # Check Answers
 - **Inter-service interactions**: Consumes file upload service for quiz resources.
 ### Grading Service
+= FastAPI with Python
 - **Functionality**: Manages grades for quizzes and courses.
 - **REST API Endpoints**:
   ```http
