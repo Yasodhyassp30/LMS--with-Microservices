@@ -8,7 +8,7 @@ from typing import List
 router = APIRouter()
 
 
-@router.post("/quiz", response_model=Quiz)
+@router.post("/quiz")
 def create_quiz(quiz: Quiz, db: Session = Depends(get_db)):
     print(quiz)
     res = QuizService.create_quiz(db, quiz)

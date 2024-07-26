@@ -79,6 +79,7 @@ class Answer(BaseModel):
 class AnswerResult(BaseModel):
     question_id: int
     correct: bool
+    correct_option: int
 
 
 class QuizResult(BaseModel):

@@ -16,6 +16,7 @@ class QuizService:
 
     @staticmethod
     def create_quiz(db: Session, quiz: Quiz):
+        print(quiz)
         db_quiz = QuizDB(
             title=quiz.title,
             description=quiz.description,
@@ -24,6 +25,7 @@ class QuizService:
         db.add(db_quiz)
         db.commit()
         db.refresh(db_quiz)
+        print("done")
         for q in quiz.questions:
             db_question = QuestionDB(
                 question_text=q.question_text,
@@ -65,6 +67,7 @@ class QuizService:
     @staticmethod
     def check_answers(db: Session, quiz_id: int, answers: List[Answer]) -> QuizResult:
         quiz = db.query(QuizDB).filter(QuizDB.quiz_id == quiz_id).first()
+        print("Hello")
         if not quiz:
             return None
 
@@ -77,19 +80,28 @@ class QuizService:
                 .filter(QuestionDB.question_id == answer.question_id)
                 .first()
             )
+            print(question)
             if question and question.correct_option == answer.selected_option:
                 results.append(
-                    AnswerResult(question_id=answer.question_id, correct=True)
+                    AnswerResult(
+                        question_id=answer.question_id,
+                        correct=True,
+                        correct_option=question.correct_option,
+                    )
                 )
                 correct_answers += 1
             else:
                 results.append(
-                    AnswerResult(question_id=answer.question_id, correct=False)
+                    AnswerResult(
+                        question_id=answer.question_id,
+                        correct=False,
+                        correct_option=question.correct_option,
+                    )
                 )
 
         score = (correct_answers / len(answers)) * 100 if answers else 0
 
-        return QuizResult(quiz_id=quiz_id, results=results, score=score)
+        return QuizResult(quiz_id=quiz_id, results=results, score=int(score))
 
     @staticmethod
     def delete_quiz(db: Session, quiz_id: int):
