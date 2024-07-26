@@ -23,13 +23,21 @@ The microservices are implemented using the Netflix software stack, specifically
 
 ### Core Services
 
-#### Class Service
+### Class Service
 - **Functionality**: Manages class-related operations.
 - **REST API Endpoints**:
-  - `GET /classes`: Retrieve all classes.
-  - `POST /classes`: Create a new class.
-  - `GET /classes/{id}`: Retrieve a specific class by ID.
-  - `PUT /classes/{id}`: Update a specific class by ID.
+  ```http
+  GET /classes/{classid}                 # Get single class details
+  POST /classes                         # Create class and randomly generate a join code
+  GET /classes/teachers/{teacherid}     # Get all classes of single teacher
+  GET /classes/students/{studentid}     # Get all classes of a student
+  DELETE /classes/{classid}             # Delete a class by teacher
+  DELETE /classes/student/leave/{classid} # Leave from class by student
+  DELETE /classes/teachers/remove/{classid}/{studentid} # Remove from the class by teacher
+  POST /classes/teachers/students/{classid} # Add student to class by email
+  POST /classes/student/join/{classid}  # Join a class using join code
+  POST /auth/register                   # Register for application
+  POST /auth/login                      # Login user
 - **Inter-service interactions**: Consumes authentication service for verifying user access.
 
 #### Authentication Service
@@ -37,9 +45,9 @@ The microservices are implemented using the Netflix software stack, specifically
 - **REST API Endpoints**:
   - `POST /auth/login`: User login.
   - `POST /auth/register`: User registration.
-  - `GET /auth/validate`: Validate JWT token.
-  - `POST /auth/logout`: User logout.
+  - JWT validation is attached to API gatway server as a request filter.
 - **Inter-service interactions**: Provides JWT validation for other services.
+- ![Authentication Flow Diagram](auth.png)
 
 #### File Upload Service
 - **Functionality**: Manages file uploads.
@@ -64,8 +72,8 @@ The services register with the Netflix Eureka discovery server, which monitors a
 
 ### API Gateway
 The Spring Cloud Gateway serves as the API gateway, routing requests to the appropriate services based on predefined configurations. It handles cross-cutting concerns such as security, rate limiting, and load balancing.
+![Gateway Configuration Diagram](gateway.png)
 ###Interservice Communications are done using Rest Templates ex:
-#```java
 ResponseEntity<Map> response = restTemplate.exchange(
     "http://auth-service/auth/user/sid/" + sid, 
     HttpMethod.GET, 
@@ -83,8 +91,7 @@ API testing tools like Postman are used to test the application's APIs. Each end
 ## Deployment
 
 ### Local Deployment
-1. Clone the repository: `git clone https://github.com/yourusername/lms-microservices.git`
-2. Navigate to the project directory: `cd lms-microservices`
+1. Clone the repository: `git clone https://github.com/yourusername/lms-microservices.git](https://github.com/Yasodhyassp30/LMS--with-Microservices)`
 3. Start each service:
    - For Spring Boot services: `./mvnw spring-boot:run`
    - For FastAPI services: `uvicorn main:app --reload`
